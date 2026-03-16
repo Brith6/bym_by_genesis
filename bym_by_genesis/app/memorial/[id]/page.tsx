@@ -142,8 +142,16 @@ export default function MemorialPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900">
-            <MediaModal 
+        <div
+            className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900"
+            style={{
+                '--primary': memorial.theme.primaryColor,
+                '--primary-dark': memorial.theme.primaryColor,
+                '--secondary': memorial.theme.secondaryColor,
+                '--gradient-primary': `linear-gradient(135deg, ${memorial.theme.primaryColor} 0%, ${memorial.theme.secondaryColor} 100%)`,
+            } as React.CSSProperties}
+        >
+            <MediaModal
                 memory={selectedMemory} 
                 onClose={() => setSelectedMemory(null)} 
                 onUpdate={handleUpdateMemory}
@@ -280,7 +288,11 @@ export default function MemorialPage() {
 
                         <button
                             onClick={() => setIsAddingMemory(true)}
-                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-full font-medium transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2"
+                            className="text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2"
+                            style={{
+                                backgroundColor: memorial.theme.primaryColor,
+                                boxShadow: `0 10px 25px ${memorial.theme.primaryColor}44`
+                            }}
                         >
                             <span>+</span> Ajouter
                         </button>
@@ -412,7 +424,8 @@ export default function MemorialPage() {
                                     </div>
                                     <button
                                         type="submit"
-                                        className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-colors mt-4"
+                                        className="w-full text-white font-bold py-3 rounded-xl transition-colors mt-4"
+                                        style={{ backgroundColor: memorial.theme.primaryColor }}
                                     >
                                         Ajouter le souvenir
                                     </button>
@@ -431,18 +444,20 @@ export default function MemorialPage() {
                 ) : (
                     <>
                         {view === 'timeline' && (
-                            <Timeline 
-                                memories={memories} 
+                            <Timeline
+                                memories={memories}
                                 onSelectMemory={setSelectedMemory}
+                                theme={memorial.theme}
                             />
                         )}
                         {view === 'grid' && (
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {memories.map((memory) => (
-                                    <MemoryCard 
-                                        key={memory._id} 
-                                        memory={memory} 
+                                    <MemoryCard
+                                        key={memory._id}
+                                        memory={memory}
                                         onClick={() => setSelectedMemory(memory)}
+                                        theme={memorial.theme}
                                     />
                                 ))}
                             </div>
